@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - Find Your Next Favorite Movie</title>
+    <link rel="stylesheet" href="src/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1>🎬 CineMatch</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-page="home">Discover</a>
+                <a href="#" class="nav-link" data-page="watchlist">My Watchlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Search and Filters Section -->
+        <section class="controls-section">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search for movies..." class="search-input">
+                <button id="search-btn" class="search-btn">Search</button>
+            </div>
+            
+            <button id="filter-toggle" class="filter-toggle">Filters</button>
+            
+            <div class="filters-panel" id="filters-panel">
+                <div class="filter-group">
+                    <label for="genre-filter">Genre</label>
+                    <select id="genre-filter" class="filter-select">
+                        <option value="">All Genres</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="year-filter">Release Year</label>
+                    <select id="year-filter" class="filter-select">
+                        <option value="">All Years</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="rating-filter">Min. Rating</label>
+                    <select id="rating-filter" class="filter-select">
+                        <option value="0">Any Rating</option>
+                        <option value="7">7.0+</option>
+                        <option value="8">8.0+</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Movies Grid -->
+        <section class="movies-section">
+            <div id="movies-grid" class="movies-grid">
+                <!-- Movie cards will be dynamically inserted here -->
+            </div>
+            <div id="loading-spinner" class="loading-spinner">Loading movies...</div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+        </section>
+    </main>
+
+    <!-- Movie Detail Modal -->
+    <div id="movie-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-body">
+                <!-- Movie details will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="src/js/api.js"></script>
+    <script src="src/js/storage.js"></script>
+    <script src="src/js/ui.js"></script>
+    <script src="src/js/events.js"></script>
+    <script src="src/js/main.js"></script>
+</body>
+</html>
