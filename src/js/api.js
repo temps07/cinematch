@@ -2,12 +2,12 @@
 const API_CONFIG = {
     tmdb: {
         baseUrl: 'https://api.themoviedb.org/3',
-        apiKey: 'your_tmdb_api_key_here', // https://www.themoviedb.org/settings/api
+        apiKey: '243af5d207d7f0b2fd1537cf01d57b5e', // https://www.themoviedb.org/settings/api
         imageBaseUrl: 'https://image.tmdb.org/t/p/w500'
     },
     watchmode: {
         baseUrl: 'https://api.watchmode.com/v1',
-        apiKey: 'your_watchmode_api_key_here' // https://www.watchmode.com/
+        apiKey: 'a3k9UMuvLz2jeFw0zsWpJ5ohWn053ez6LotoUYpL' // https://www.watchmode.com/
     }
 };
 
