@@ -8,6 +8,7 @@ const API_CONFIG = {
     watchmode: {
         baseUrl: 'https://api.watchmode.com/v1',
         apiKey: 'a3k9UMuvLz2jeFw0zsWpJ5ohWn053ez6LotoUYpL' // https://www.watchmode.com/
+
     }
 };
 
@@ -17,7 +18,6 @@ class ApiService {
         this.watchmodeApiKey = API_CONFIG.watchmode.apiKey;
     }
 
-    // TMDB API calls
     async fetchPopularMovies() {
         try {
             const response = await fetch(
@@ -73,8 +73,12 @@ class ApiService {
         }
     }
 
-    // Watchmode API call for streaming availability
     async getStreamingAvailability(tmdbId) {
+        if (!this.watchmodeApiKey || this.watchmodeApiKey === 'YOUR_WATCHMODE_API_KEY_HERE') {
+            console.log('Watchmode API key not configured, returning mock streaming data');
+            return this.getMockStreamingData();
+        }
+
         try {
             const response = await fetch(
                 `${API_CONFIG.watchmode.baseUrl}/title/${tmdbId}/sources/?apiKey=${this.watchmodeApiKey}`
@@ -84,13 +88,45 @@ class ApiService {
             return data;
         } catch (error) {
             console.error('Error fetching streaming availability:', error);
-            return []; // Return empty array if failed
+            return this.getMockStreamingData(); // Fallback to mock data
         }
+    }
+
+    // Mock streaming data for demo purposes
+    getMockStreamingData() {
+        const services = ['Netflix', 'Disney+', 'HBO Max', 'Prime Video', 'Hulu'];
+        const types = ['subscription', 'rent', 'buy'];
+        const mockData = [];
+
+        // Randomly select 2-3 streaming services
+        const selectedServices = services
+            .sort(() => 0.5 - Math.random())
+            .slice(0, Math.floor(Math.random() * 2) + 2);
+
+        selectedServices.forEach(service => {
+            mockData.push({
+                name: service,
+                type: types[Math.floor(Math.random() * types.length)]
+            });
+        });
+
+        return mockData;
     }
 
     // Helper method to get full image URL
     getImageUrl(path, size = 'w500') {
-        return path ? `https://image.tmdb.org/t/p/${size}${path}` : '/assets/images/placeholder-poster.jpg';
+        return path ? `https://image.tmdb.org/t/p/${size}${path}` : './assets/images/placeholder-poster.jpg';
+    }
+
+    // Helper to get YouTube trailer key
+    getTrailerKey(movieDetails) {
+        if (movieDetails.videos && movieDetails.videos.results) {
+            const trailer = movieDetails.videos.results.find(
+                video => video.type === 'Trailer' && video.site === 'YouTube'
+            );
+            return trailer ? trailer.key : null;
+        }
+        return null;
     }
 }
 

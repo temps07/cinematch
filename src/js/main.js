@@ -1,3 +1,8 @@
+import { apiService } from './api.js';
+import { storageService } from './storage.js';
+import { uiService } from './ui.js';
+import { eventService } from './events.js';
+
 class CineMatchApp {
     constructor() {
         this.currentPage = 'home';
@@ -35,6 +40,19 @@ class CineMatchApp {
         document.addEventListener('navigationChanged', (e) => {
             this.handleNavigation(e.detail);
         });
+
+        // Filter events
+        document.getElementById('genre-filter').addEventListener('change', () => {
+            this.applyFilters();
+        });
+
+        document.getElementById('year-filter').addEventListener('change', () => {
+            this.applyFilters();
+        });
+
+        document.getElementById('rating-filter').addEventListener('change', () => {
+            this.applyFilters();
+        });
     }
 
     async loadInitialData() {
@@ -59,6 +77,11 @@ class CineMatchApp {
     }
 
     async handleSearch(query) {
+        if (!query.trim()) {
+            await this.loadInitialData();
+            return;
+        }
+
         uiService.showLoading();
         
         try {
@@ -71,20 +94,51 @@ class CineMatchApp {
     }
 
     async handleMovieSelection(movieId) {
-        // This will be implemented in Week 6
-        console.log('Movie selected:', movieId);
-        alert(`Movie detail view for ID: ${movieId} will be implemented in Week 6!`);
+        await uiService.showMovieModal(movieId);
     }
 
     handleNavigation(page) {
         this.currentPage = page;
         
+        // Update active nav link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector(`[data-page="${page}"]`).classList.add('active');
+
         if (page === 'home') {
             this.loadInitialData();
         } else if (page === 'watchlist') {
-            // This will be implemented in Week 7
-            alert('Watchlist view will be implemented in Week 7!');
+            uiService.renderWatchlist();
         }
+    }
+
+    applyFilters() {
+        const genreFilter = document.getElementById('genre-filter').value;
+        const yearFilter = document.getElementById('year-filter').value;
+        const ratingFilter = document.getElementById('rating-filter').value;
+
+        let filteredMovies = [...this.currentMovies];
+
+        if (genreFilter) {
+            filteredMovies = filteredMovies.filter(movie => 
+                movie.genre_ids.includes(parseInt(genreFilter))
+            );
+        }
+
+        if (yearFilter) {
+            filteredMovies = filteredMovies.filter(movie => 
+                movie.release_date && movie.release_date.startsWith(yearFilter)
+            );
+        }
+
+        if (ratingFilter) {
+            filteredMovies = filteredMovies.filter(movie => 
+                movie.vote_average >= parseFloat(ratingFilter)
+            );
+        }
+
+        uiService.renderMovies(filteredMovies);
     }
 }
 
