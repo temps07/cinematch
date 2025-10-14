@@ -104,14 +104,12 @@ class CineMatchApp {
     }
 
     async handleMovieSelection(movieId) {
-        // This now calls the actual modal instead of showing alert
         await uiService.showMovieModal(movieId);
     }
 
     handleNavigation(page) {
         this.currentPage = page;
         
-        // Update active nav link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
         });
