@@ -42,17 +42,27 @@ class CineMatchApp {
         });
 
         // Filter events
-        document.getElementById('genre-filter').addEventListener('change', () => {
-            this.applyFilters();
-        });
+        const genreFilter = document.getElementById('genre-filter');
+        const yearFilter = document.getElementById('year-filter');
+        const ratingFilter = document.getElementById('rating-filter');
 
-        document.getElementById('year-filter').addEventListener('change', () => {
-            this.applyFilters();
-        });
+        if (genreFilter) {
+            genreFilter.addEventListener('change', () => {
+                this.applyFilters();
+            });
+        }
 
-        document.getElementById('rating-filter').addEventListener('change', () => {
-            this.applyFilters();
-        });
+        if (yearFilter) {
+            yearFilter.addEventListener('change', () => {
+                this.applyFilters();
+            });
+        }
+
+        if (ratingFilter) {
+            ratingFilter.addEventListener('change', () => {
+                this.applyFilters();
+            });
+        }
     }
 
     async loadInitialData() {
@@ -94,6 +104,7 @@ class CineMatchApp {
     }
 
     async handleMovieSelection(movieId) {
+        // This now calls the actual modal instead of showing alert
         await uiService.showMovieModal(movieId);
     }
 
@@ -114,27 +125,34 @@ class CineMatchApp {
     }
 
     applyFilters() {
-        const genreFilter = document.getElementById('genre-filter').value;
-        const yearFilter = document.getElementById('year-filter').value;
-        const ratingFilter = document.getElementById('rating-filter').value;
+        const genreFilter = document.getElementById('genre-filter');
+        const yearFilter = document.getElementById('year-filter');
+        const ratingFilter = document.getElementById('rating-filter');
+
+        // Check if filters exist (they might not be loaded yet)
+        if (!genreFilter || !yearFilter || !ratingFilter) return;
+
+        const genreValue = genreFilter.value;
+        const yearValue = yearFilter.value;
+        const ratingValue = ratingFilter.value;
 
         let filteredMovies = [...this.currentMovies];
 
-        if (genreFilter) {
+        if (genreValue) {
             filteredMovies = filteredMovies.filter(movie => 
-                movie.genre_ids.includes(parseInt(genreFilter))
+                movie.genre_ids && movie.genre_ids.includes(parseInt(genreValue))
             );
         }
 
-        if (yearFilter) {
+        if (yearValue) {
             filteredMovies = filteredMovies.filter(movie => 
-                movie.release_date && movie.release_date.startsWith(yearFilter)
+                movie.release_date && movie.release_date.startsWith(yearValue)
             );
         }
 
-        if (ratingFilter) {
+        if (ratingValue) {
             filteredMovies = filteredMovies.filter(movie => 
-                movie.vote_average >= parseFloat(ratingFilter)
+                movie.vote_average >= parseFloat(ratingValue)
             );
         }
 
