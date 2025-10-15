@@ -1,7 +1,8 @@
-import { apiService } from './api.js';
-import { storageService } from './storage.js';
-import { uiService } from './ui.js';
-import { eventService } from './events.js';
+// REMOVE these lines from main.js:
+// import { apiService } from './api.js';
+// import { storageService } from './storage.js';
+// import { uiService } from './ui.js';
+// import { eventService } from './events.js';
 
 class CineMatchApp {
     constructor() {
@@ -104,12 +105,14 @@ class CineMatchApp {
     }
 
     async handleMovieSelection(movieId) {
+        // This now calls the actual modal instead of showing alert
         await uiService.showMovieModal(movieId);
     }
 
     handleNavigation(page) {
         this.currentPage = page;
         
+        // Update active nav link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
         });
