@@ -4,7 +4,6 @@ class EventService {
     }
 
     initEventListeners() {
-        // Search functionality
         const searchInput = document.getElementById('search-input');
         const searchBtn = document.getElementById('search-btn');
 
@@ -25,26 +24,29 @@ class EventService {
         const filterToggle = document.getElementById('filter-toggle');
         const filtersPanel = document.getElementById('filters-panel');
         
-        filterToggle.addEventListener('click', () => {
-            const isVisible = filtersPanel.style.display === 'grid';
-            filtersPanel.style.display = isVisible ? 'none' : 'grid';
-            filterToggle.textContent = isVisible ? 'Filters' : 'Hide Filters';
-        });
+        if (filterToggle && filtersPanel) {
+            filterToggle.addEventListener('click', () => {
+                const isVisible = filtersPanel.style.display === 'grid';
+                filtersPanel.style.display = isVisible ? 'none' : 'grid';
+                filterToggle.textContent = isVisible ? 'Filters' : 'Hide Filters';
+            });
+        }
 
         // Modal close
         const closeBtn = document.querySelector('.close-btn');
         const modal = document.getElementById('movie-modal');
 
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        // Close modal when clicking outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
+        if (closeBtn && modal) {
+            closeBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
-            }
-        });
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
 
         // Navigation
         const navLinks = document.querySelectorAll('.nav-link');
@@ -53,16 +55,13 @@ class EventService {
                 e.preventDefault();
                 const page = link.getAttribute('data-page');
                 
-                // Update active state
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
                 
-                // Dispatch navigation event
                 const event = new CustomEvent('navigationChanged', { detail: page });
                 document.dispatchEvent(event);
             });
         });
     }
 }
-
 const eventService = new EventService();

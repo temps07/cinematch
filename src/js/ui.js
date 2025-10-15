@@ -69,7 +69,6 @@ class UIService {
         try {
             this.showModalLoading();
             
-            // Fetch movie details and streaming availability concurrently
             const [movieDetails, streamingData] = await Promise.all([
                 apiService.getMovieDetails(movieId),
                 apiService.getStreamingAvailability(movieId)
@@ -102,7 +101,6 @@ class UIService {
         `;
         this.movieModal.style.display = 'flex';
         
-        // Add event listener to close button
         this.modalBody.querySelector('.close-modal-btn').addEventListener('click', () => {
             this.hideMovieModal();
         });
@@ -177,7 +175,6 @@ class UIService {
 
         this.movieModal.style.display = 'flex';
 
-        // Add event listener to watchlist button
         const watchlistBtn = this.modalBody.querySelector('.watchlist-btn');
         watchlistBtn.addEventListener('click', (e) => {
             const movieId = parseInt(e.target.getAttribute('data-movie-id'));
@@ -243,5 +240,4 @@ class UIService {
         });
     }
 }
-
 const uiService = new UIService();

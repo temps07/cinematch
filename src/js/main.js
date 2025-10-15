@@ -9,7 +9,6 @@ class CineMatchApp {
         try {
             this.setupEventListeners();
             await this.loadInitialData();
-            
             console.log('CineMatch app initialized successfully!');
         } catch (error) {
             console.error('Failed to initialize app:', error);
@@ -21,32 +20,27 @@ class CineMatchApp {
         document.addEventListener('searchRequested', (e) => {
             this.handleSearch(e.detail);
         });
+
         document.addEventListener('movieSelected', (e) => {
             this.handleMovieSelection(e.detail);
         });
+
         document.addEventListener('navigationChanged', (e) => {
             this.handleNavigation(e.detail);
         });
+
         const genreFilter = document.getElementById('genre-filter');
         const yearFilter = document.getElementById('year-filter');
         const ratingFilter = document.getElementById('rating-filter');
 
         if (genreFilter) {
-            genreFilter.addEventListener('change', () => {
-                this.applyFilters();
-            });
+            genreFilter.addEventListener('change', () => this.applyFilters());
         }
-
         if (yearFilter) {
-            yearFilter.addEventListener('change', () => {
-                this.applyFilters();
-            });
+            yearFilter.addEventListener('change', () => this.applyFilters());
         }
-
         if (ratingFilter) {
-            ratingFilter.addEventListener('change', () => {
-                this.applyFilters();
-            });
+            ratingFilter.addEventListener('change', () => this.applyFilters());
         }
     }
 
@@ -57,8 +51,10 @@ class CineMatchApp {
             const movies = await apiService.fetchPopularMovies();
             this.currentMovies = movies;
             uiService.renderMovies(movies);
+
             const genres = await apiService.getMovieGenres();
             uiService.populateGenreFilter(genres);
+
             uiService.populateYearFilter();
 
         } catch (error) {
@@ -82,6 +78,7 @@ class CineMatchApp {
             uiService.showError('Search failed. Please try again.');
         }
     }
+
     async handleMovieSelection(movieId) {
         await uiService.showMovieModal(movieId);
     }
@@ -133,7 +130,6 @@ class CineMatchApp {
         uiService.renderMovies(filteredMovies);
     }
 }
-// Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new CineMatchApp();
 });
